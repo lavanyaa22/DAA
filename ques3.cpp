@@ -1,48 +1,47 @@
 #include <iostream>
 using namespace std;
 
-	int position(int a[], int lb, int ub)
-	{
-		int p=a[lb];
-		int start =lb;
-		int end =ub;
-		while(start<end)
-		{
-			while(start <= ub && a[start]<=p){
-				start++;
-			}
-			while(a[end]>p){
-				end--;
-			}
-		
-		if(start<end)
-		{
-			swap(a[start],a[end]);
-		}
-	}
-		swap(a[lb],a[end]);
-		return end;
-	}
-	void quick (int a[], int lb, int ub)
-	{
-		if(lb<ub)
-		{
-			int loc=position(a,lb,ub);
-			quick(a,lb,loc-1);
-			quick(a,loc+1,ub);
-		}
-	}
-int main()
+void merge(int a[], int l, int m, int r) 
 {
-    int a[5] = {4, 2, 6, 9, 2};
-    int n = 5;
+    int i = l, j = m + 1, k = l;
+    int temp[100];
 
-    quick(a, 0, n - 1);
+    while (i <= m && j <= r) {
+        if (a[i] < a[j])
+            temp[k++] = a[i++];
+        else
+            temp[k++] = a[j++];
+    }
 
-    cout << "Sorted array: ";
-    for (int i = 0; i < n; i++)
-        cout << a[i] << " ";
+    while (i <= m) temp[k++] = a[i++];
+    while (j <= r) temp[k++] = a[j++];
 
-    return 0;
+    for (i = l; i <= r; i++)
+        a[i] = temp[i];
+}
+
+void mergeSort(int a[], int l, int r) {
+    if (l < r) {
+        int m = (l + r) / 2;
+        mergeSort(a, l, m);
+        mergeSort(a, m + 1, r);
+        merge(a, l, m, r);
+    }
+}
+
+int main() {
+    int arr[] = {12, 11, 13, 5, 6, 7};
+    int arr2[] = {38, 27, 43, 3, 9, 82, 10};
+
+    int n1 = 6, n2 = 7;
+
+    mergeSort(arr, 0, n1 - 1);
+    mergeSort(arr2, 0, n2 - 1);
+
+    cout << "Array 1: ";
+    for (int i = 0; i < n1; i++) cout << arr[i] << " ";
+
+    cout << "\nArray 2: ";
+    for (int i = 0; i < n2; i++) cout << arr2[i] << " ";
 }
 
